@@ -535,16 +535,7 @@ def readTopology(graphFile: str, twFile: str="") -> Graph:
             values = np.asarray(tuple(float(tokens[4 + h * 2]) + BP[h] for h in H))
             A[i][j] = PWLFunction(BP, values)
             if not A[i][j].isFIFO():
-                slopes = A[i][j].slopes()
-                print(f"FIFO violated for arc ({i}, {j}) with slopes: {slopes}")
-                mask = [ False for _ in H ]
-                for h in range(len(BP) - 1):
-                    mask[h] = mycompare(slopes[h], .0) > 0
-                mask[-1] = True
-                A[i][j] = PWLFunction(BP[mask], values[mask])
-                print(f"FIFO Fixing:", A[i][j].isFIFO())
-                # raise RuntimeError(f"FIFO violated for arc ({i}, {j}) with slopes: {A[i][j].slopes()}") 
-    # return A 
+                raise RuntimeError(f"FIFO violated for arc ({i}, {j})") 
     N = tuple(range(n))
     if twFile != "":
         with open(twFile) as f:
