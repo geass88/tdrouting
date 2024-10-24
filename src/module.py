@@ -1,5 +1,5 @@
 '''
-version 1.0 - 2024-08-09
+version 1.1 - 2024-10-24
 @author: tommaso
 '''
 
@@ -250,7 +250,7 @@ class Graph:
                 self.arcs[i][j].maxLength = float(tokens[3])
         return BP, commonSpeed
     
-    def dijkstra(self, start: int, startTime: float, goal: int | None=None) -> np.ndarray:
+    def dijkstra(self, start: int, startTime: float, goal: int | None=None) -> list:
         if start not in self.vertices or (goal != None and goal not in self.vertices):
             return None
         # P = np.full(len(self.vertices), -1, int)
@@ -311,7 +311,11 @@ class Arc(Base):
         self.jams = jams
         self.maxSpeed = maxSpeed        
         self.bp = bp
-        assert(len(bp) == len(jams)) 
+        assert(len(bp) == len(jams))
+        assert(length > .0) 
+        #if length <= 0:
+        #    print("Fixing 0 length arc to avoid FIFO violation!")
+        #    self.length = EPSILON
         # self.speed = tuple(maxSpeed*jams[h] for h in range(len(jams)))
 
     def speed(self, h: int) -> float:
@@ -567,4 +571,3 @@ def readInstance(graphFile: str, twFile:str) -> Graph:
     with open(twFile) as f:
         TW = tuple(TimeWindow(*tuple(float(v) for v in f.readline().strip().split(" "))) for i in N)
     return Graph(np.asarray(N), A, np.asarray(TW))
-
