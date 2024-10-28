@@ -178,7 +178,7 @@ class Solver:
                             l = LB.length
                             u = UB.length
                             f.write(f"{i} {j} {l} {u}\n")                      
-                dummy:Arc = Arc(0., maxSpeed, commonSpeed/maxSpeed, BP)
+                dummy:Arc = Arc(1., maxSpeed, commonSpeed/maxSpeed, BP)
                 for i in N:
                     tw = self.graph.timeWindows[i]
                     A = dummy.computeLen(0., tw.opening)
